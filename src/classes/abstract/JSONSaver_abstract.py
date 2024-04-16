@@ -6,9 +6,9 @@ class AbstractJSONSaver(ABC):
     который в свою очередь будет """
 
     @abstractmethod
-    def add_vacancy(self):
+    def add_vacancy(self, vacancy):
         pass
 
     @abstractmethod
-    def delete_vacancy(self):
+    def delete_vacancy(self, vacancy):
         pass
