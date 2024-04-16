@@ -20,12 +20,9 @@ class HeadHunterAPI(AbsctractAPI):
         response = requests.get(self.url,
                                 params={'text': keyword, 'page': page, 'per_page': per_page},
                                 headers=self.headers)
+        response_json = response.json()['items']
         with open('data/vacancies.json', 'w', encoding='utf-8') as file:
             # запишем JSON-ответ в файл
-            file.write(response.text)
-
-        with open('data/vacancies.json', 'r', encoding='utf-8') as file:
-            # возвращаем словарь для работы с вакансиями
-            response_json = json.load(file)
+            file.write(json.dumps(response_json))
 
         return response_json

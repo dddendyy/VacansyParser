@@ -1,5 +1,6 @@
 from src.classes.HH_API import HeadHunterAPI
 from src.classes.vacancy import Vacancy
+from src.classes.JSONSaver import JSONSaver
 
 if __name__ == '__main__':
 
@@ -11,3 +12,7 @@ if __name__ == '__main__':
 
     # конвертируем данные из .json файла в список ЭК
     vacancies_list = Vacancy.convert_to_object_list(json_vacancies)
+
+    vacancy = Vacancy('Python-разработчик', 100_000, 150_000, 'RUR', '///', '', '')
+
+    json_saver = JSONSaver()

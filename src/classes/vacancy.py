@@ -45,7 +45,7 @@ class Vacancy:
     @classmethod
     def convert_to_object_list(cls, vacancies: dict):
         """Передаем в качестве аргумента """
-        for i in vacancies['items']:
+        for i in vacancies:
             if i['salary'] is None:
                 cls.vacancies_list.append(Vacancy(i['name'],
                                                   0,
