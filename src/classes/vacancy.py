@@ -5,7 +5,16 @@ class Vacancy:
     vacancies_list = []
     favorite_vacancies_list = []
 
-    def __init__(self, vacancie_id, name, salary_from, salary_to, currency, url, requirements, responsibility):
+    def __init__(self,
+                 vacancie_id: str,
+                 name: str,
+                 salary_from: int,
+                 salary_to: int,
+                 currency: str,
+                 url: str,
+                 requirements: str,
+                 responsibility: str):
+
         self.vacancie_id = vacancie_id
         self.name = name
         self.salary_from = salary_from
@@ -29,11 +38,11 @@ class Vacancy:
 
         if self.salary_from == 0 and self.salary_to == 0:
             # если одна из зарплат не указана - исключение
-            raise TypeError(f'У вакансии не указана зарплата')
+            raise TypeError(f'У одной из вакансий не указана зарплата')
 
         elif other.salary_from == 0 and other.salary_to == 0:
             # если одна из зарплат не указана - исключение
-            raise TypeError(f'У вакансии не указана зарплата')
+            raise TypeError(f'У одной из вакансий не указана зарплата')
 
         if self.salary_to == 0 and other.salary_to != 0:
             return True
@@ -42,7 +51,7 @@ class Vacancy:
             return False
 
         elif self.salary_to != 0 and other.salary_to != 0:
-            return self.salary_from + self.salary_to > other.salary_from + other.salary_to
+            return self.salary_to > other.salary_to
 
         else:
             return self.salary_from > other.salary_from
@@ -75,8 +84,9 @@ class Vacancy:
 
     @classmethod
     def convert_to_object_list(cls, vacancies: dict):
-        """Передаем в качестве аргумента """
+        """Метод, который конвертирует полученный список вакансий в список ЭК"""
         for i in vacancies:
+            # если зарплата не указана
             if i['salary'] is None:
                 cls.vacancies_list.append(Vacancy(i['id'],
                                                   i['name'],
@@ -86,6 +96,7 @@ class Vacancy:
                                                   i['url'],
                                                   i['snippet']['requirement'],
                                                   i['snippet']['responsibility']))
+            # если указана только верхняя вилка
             elif i['salary']['from'] is None and i['salary']['to'] is not None:
                 cls.vacancies_list.append(Vacancy(i['id'],
                                                   i['name'],
@@ -95,6 +106,7 @@ class Vacancy:
                                                   i['url'],
                                                   i['snippet']['requirement'],
                                                   i['snippet']['responsibility']))
+            # если указана только нижняявилка
             elif i['salary']['from'] is not None and i['salary']['to'] is None:
                 cls.vacancies_list.append(Vacancy(i['id'],
                                                   i['name'],
@@ -104,6 +116,7 @@ class Vacancy:
                                                   i['url'],
                                                   i['snippet']['requirement'],
                                                   i['snippet']['responsibility']))
+            # если указано всё
             else:
                 cls.vacancies_list.append(Vacancy(i['id'],
                                                   i['name'],
@@ -118,13 +131,16 @@ class Vacancy:
 
     @classmethod
     def favorite_to_object_list(cls, vacancies: dict):
+        """Так как набор полей у сырого файла и нашего класса разный,
+        то я создал отдельный метод, который возвращает список избранных вакансий
+        принцип работы такой же, как у метода выше"""
         for i in vacancies:
             cls.favorite_vacancies_list.append(Vacancy(i['vacancie_id'],
-                                                              i['name'],
-                                                              i['salary_from'],
-                                                              i['salary_to'],
-                                                              i['currency'],
-                                                              i['url'],
-                                                              i['requirements'],
-                                                              i['responsibility']))
+                                                       i['name'],
+                                                       i['salary_from'],
+                                                       i['salary_to'],
+                                                       i['currency'],
+                                                       i['url'],
+                                                       i['requirements'],
+                                                       i['responsibility']))
         return cls.favorite_vacancies_list
