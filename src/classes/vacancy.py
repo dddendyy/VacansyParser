@@ -3,6 +3,7 @@ class Vacancy:
     вакансий и список из ЭК вакансий полученных от API"""
 
     vacancies_list = []
+    favorite_vacancies_list = []
 
     def __init__(self, vacancie_id, name, salary_from, salary_to, currency, url, requirements, responsibility):
         self.vacancie_id = vacancie_id
@@ -23,36 +24,28 @@ class Vacancy:
         2. self == other
         3. self < other"""
 
-        if self.currency != other.currency:
-            # если не совпадают валюты - исключение
-            raise TypeError('Можно сравнивать вакансии только с одинаковыми валютами зарплат!')
+        if not isinstance(other, Vacancy):
+            raise TypeError('Можно сравнивать только ЭК класса вакансии')
 
         if self.salary_from == 0 and self.salary_to == 0:
             # если одна из зарплат не указана - исключение
-            raise TypeError(f'У вакансии {self.name} с ID: {self.vacancie_id} не указана зарплата')
+            raise TypeError(f'У вакансии не указана зарплата')
 
         elif other.salary_from == 0 and other.salary_to == 0:
             # если одна из зарплат не указана - исключение
-            raise TypeError(f'У вакансии {other.name} с ID: {other.vacancie_id} не указана зарплата')
+            raise TypeError(f'У вакансии не указана зарплата')
+
+        if self.salary_to == 0 and other.salary_to != 0:
+            return True
+
+        elif self.salary_to != 0 and other.salary_to == 0:
+            return False
 
         elif self.salary_to != 0 and other.salary_to != 0:
-            print('У обеих вакансий указаны верхние вилки зарплаты, сравнение пойдет по ним')
-            return self.salary_to > other.salary_to
-
-        elif self.salary_from != 0 and other.salary_from != 0:
-            print('У обеих вакансий указаный нижние вилки зарплаты, cравнение пойдет по ним')
-            return self.salary_from > other.salary_from
+            return self.salary_from + self.salary_to > other.salary_from + other.salary_to
 
         else:
-            raise TypeError('У одной из вакансий указана вилка, которая не указана у второй')
-
-    def __eq__(self, other):
-        """Метод сравнения зарплат у вакансий, обработка оператора '==' """
-        if self.salary_to != 0 and other.salary_to != 0:
-            return self.salary_to == other.salary_to
-
-        elif self.salary_from != 0 and other.salary_from != 0:
-            return self.salary_from == other.salary_from
+            return self.salary_from > other.salary_from
 
     def __str__(self):
         if self.salary_from == 0 and self.salary_to != 0:
@@ -122,3 +115,16 @@ class Vacancy:
                                                   i['snippet']['responsibility']))
 
         return cls.vacancies_list
+
+    @classmethod
+    def favorite_to_object_list(cls, vacancies: dict):
+        for i in vacancies:
+            cls.favorite_vacancies_list.append(Vacancy(i['vacancie_id'],
+                                                              i['name'],
+                                                              i['salary_from'],
+                                                              i['salary_to'],
+                                                              i['currency'],
+                                                              i['url'],
+                                                              i['requirements'],
+                                                              i['responsibility']))
+        return cls.favorite_vacancies_list
