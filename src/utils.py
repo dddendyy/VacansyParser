@@ -91,3 +91,18 @@ def print_n_vacancies(vacancies):
     for vacancy in sorted(currency_vacancies[-n::], reverse=True):
         print(vacancy)
         print('--------------------------------------------------------\n')
+
+
+def filter_by_keyword(vacancies):
+    keyword = input('Введи ключевое слово (фразу) по которому(-ой) будем искать вакансии\n'
+                    'Искать будем в названии вакансии, требованиях и обязанностях: ')
+    print('--------------------------------------------------------\n')
+    for vacancy in vacancies:
+        try:
+            if (keyword in vacancy.name or
+                    keyword in vacancy.requirements or
+                    keyword in vacancy.responsibility):
+                print(vacancy)
+        except TypeError:
+            print('К сожалению, ничего не найдено :(')
+

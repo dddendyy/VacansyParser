@@ -6,7 +6,8 @@ from src.utils import (print_vacancies,
                        add_vacancy_to_favorite,
                        delete_vacancy_from_favorite,
                        print_favorite_vacancies,
-                       print_n_vacancies)
+                       print_n_vacancies,
+                       filter_by_keyword)
 # создаем ЭК класса HeadHunterAPI
 hh_api = HeadHunterAPI()
 
@@ -20,6 +21,7 @@ user_interface = ('1 - сортировка по убыванию зарплат
                   '3 - удалить вакансию из избранного (по ID)\n'
                   '4 - вывести избранные вакансии\n'
                   '5 - вывод топ-N вакансий по зарплате\n'
+                  '6 - сортировка по ключевому слову\n'
                   '0 - завершить работу\n'
                   'Введи одно из чисел выше: ')
 
@@ -70,6 +72,9 @@ if __name__ == '__main__':
 
         elif user_input == 5:
             print_n_vacancies(vacancies_list)
+
+        elif user_input == 6:
+            filter_by_keyword(vacancies_list)
 
         elif user_input == 0:
             print('Работа завершена')
