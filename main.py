@@ -1,8 +1,9 @@
 from src.classes.HH_API import HeadHunterAPI
 from src.classes.vacancy import Vacancy
+from src.classes.employer import Employer
 from src.classes.JSONSaver import JSONSaver
 from src.classes.DBManager import DBManager
-from src.utils import (print_vacancies,
+from src.utils import (print_object_list,
                        print_sorted_by_salary,
                        add_vacancy_to_favorite,
                        delete_vacancy_from_favorite,
@@ -38,10 +39,12 @@ if __name__ == '__main__':
 
     print('Приветствую! Перед тобой программа для парсинга вакансий на HH.ru!')
     print('Хочешь искать вакансии или посмотреть имеющихся работодателей?\n'
-          'Чтобы посмотреть вакансии, введи 1'
+          'Чтобы посмотреть вакансии, введи 1\n'
           'Чтобы посмотреть работодателей, введи 2')
     user_choice = int(input())
+
     if user_choice == 1:
+        """Если пользователь ввёл 1, то работаем с вакансиями"""
         user_keyword = input('Введи запрос, по которому мы будем искать вакансии: ').strip()
 
         # бесконечне циклы нужны для постоянного диалога с пользователем
@@ -68,7 +71,7 @@ if __name__ == '__main__':
         vacancies_list = Vacancy.convert_to_object_list(json_vacancies)
 
         # выводим полученные вакансии
-        print_vacancies(vacancies_list)
+        print_object_list(vacancies_list)
 
         # снова запускаем цикл для диалога
         while True:
@@ -110,4 +113,11 @@ if __name__ == '__main__':
                 print('Неизвестное значение! Введи число от 1 до 5!')
 
     elif user_choice == 2:
-        pass
+        """Если пользователь ввёл 2, то работаем с работодателями
+        происходит здесь ровно тоже самое, что и с вакансиями"""
+        json_employers = hh_api.load_employers()
+        employers_list = Employer.convert_to_object_list(json_employers)
+        print_object_list(employers_list)
+
+    else:
+        print('Неизвестное значение! Введи 1 или 2!')

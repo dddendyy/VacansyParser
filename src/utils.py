@@ -17,10 +17,11 @@ def get_favorite_vacancies():
 favorite_vacancies_list = get_favorite_vacancies()
 
 
-def print_vacancies(vacancies):
-    """Функция для вывода вакансий на экран"""
-    for vacancy in vacancies:
-        print(vacancy)
+def print_object_list(object_list):
+    """Функция для вывода классовой структуры на экран
+    P.S. Работает только при реализованно __str__"""
+    for element in object_list:
+        print(element)
         print('--------------------------------------------------------\n')
 
 

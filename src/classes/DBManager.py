@@ -4,13 +4,6 @@ import psycopg2
 class DBManager:
     """Класс для работы с БД"""
 
-    # def __init__(self):
-    #     self.dbname = 'head_hunter',
-    #     self.user = 'postgres',
-    #     self.password = '123',
-    #     self.host = 'localhost',
-    #     self.port = 5432
-
     @staticmethod
     def create_employers_table():
         conn = psycopg2.connect(
@@ -53,4 +46,3 @@ class DBManager:
                                 "requirement text)")
         finally:
             conn.close()
-
