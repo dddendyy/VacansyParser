@@ -23,6 +23,6 @@ class HeadHunterAPI(AbsctractAPI):
         response_json = response.json()['items']
         with open('data/vacancies.json', 'w', encoding='utf-8') as file:
             # запишем JSON-ответ в файл
-            file.write(json.dumps(response_json))
+            file.write(json.dumps(response_json, indent=4))
 
         return response_json
