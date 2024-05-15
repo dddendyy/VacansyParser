@@ -2,7 +2,6 @@ class Employer:
     """Класс для описания работодателя"""
 
     employers_list = []
-    favorite_employers_list = []
 
     def __init__(self, employer_id, name, open_vacancies, url):
         self.employer_id = employer_id
@@ -17,10 +16,10 @@ class Employer:
                 f"URL: {self.url}")
 
     @classmethod
-    def convert_to_object_list(cls, employers: dict):
+    def convert_to_object_list(cls, employers: list):
         for employer in employers:
-            cls.employers_list.append(Employer(employer['id'],
-                                               employer['name'],
-                                               employer['open_vacancies'],
-                                               employer['url']))
+            cls.employers_list.append(Employer(employer[0],
+                                               employer[1],
+                                               employer[2],
+                                               employer[3]))
         return cls.employers_list

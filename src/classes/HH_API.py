@@ -10,7 +10,6 @@ class HeadHunterAPI(AbsctractAPI):
 
     def __init__(self):
         self.vacancies_url = 'https://api.hh.ru/vacancies'
-        self.employers_url = 'https://api.hh.ru/employers'
         self.headers = {'User-Agent': 'HH-User-Agent'}
 
     def load_vacancies(self, keyword, page=0, per_page=20):
@@ -26,13 +25,4 @@ class HeadHunterAPI(AbsctractAPI):
             # запишем JSON-ответ в файл
             file.write(json.dumps(response_json, indent=4))
 
-        return response_json
-
-    def load_employers(self, page=0, per_page=20):
-        """Получаем список вакансий с помощью библиотеки requests
-        Механизм такой же, как и при получении вакансий"""
-        response = requests.get(self.employers_url,
-                                params={'page': page, 'per_page': per_page},
-                                headers=self.headers)
-        response_json = response.json()['items']
         return response_json
