@@ -109,6 +109,17 @@ if __name__ == '__main__':
         elif user_input == 8:
             db_manager.get_all_vacancies()
 
+        # 9 - получить среднюю зарплату по вакансиям избранных работодателей
+        elif user_input == 9:
+            print('Среднюю зарплату можно получить только по одной валюте\n')
+            user_currency = input('Введи валюту: ').upper() # проверяю на валюту
+            average_salary = db_manager.get_average_salary(user_currency) # правда, в моем случае, не сильно актуально
+            # т.к. все вакансии с RUR и если указать что-то, кроме RUR , будет None
+            print(f'Средняя зарплату по вакансиям избранных работодателей составляет: {average_salary} {user_currency}')
+
+        elif user_input == 10:
+            pass
+
         # 0 - чтобы завершить работу
         elif user_input == 0:
             print('Работа завершена')

@@ -178,3 +178,20 @@ class DBManager:
         finally:
             conn.close()
 
+    @staticmethod
+    def get_average_salary(currency):
+        conn = psycopg2.connect(
+            host='localhost',
+            database='head_hunter',
+            user='postgres',
+            password='123'
+        )
+        try:
+            with conn:
+                with conn.cursor() as cur:
+                    cur.execute("SELECT AVG(salary_to) FROM vacancies WHERE currency = %s;", currency)
+                    avereage_salary = cur.fetchone()[0]
+        finally:
+            conn.close()
+
+        return avereage_salary
