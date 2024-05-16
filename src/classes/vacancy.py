@@ -7,6 +7,7 @@ class Vacancy:
 
     def __init__(self,
                  vacancie_id: str,
+                 employer_id: str,
                  name: str,
                  salary_from: int,
                  salary_to: int,
@@ -16,6 +17,7 @@ class Vacancy:
                  responsibility: str):
 
         self.vacancie_id = vacancie_id
+        self.employer_id = employer_id
         self.name = name
         self.salary_from = salary_from
         self.salary_to = salary_to
@@ -59,24 +61,28 @@ class Vacancy:
     def __str__(self):
         if self.salary_from == 0 and self.salary_to != 0:
             return (f"ID вакансии: {self.vacancie_id}, название: {self.name}\n"
+                    f"ID работодателя {self.employer_id}\n"
                     f"Зарплата: до {self.salary_to} {self.currency}\n"
                     f"Требования: {self.requirements}\n"
                     f"Обязанности: {self.responsibility}\n"
                     f"Ссылка: {self.url}\n")
         elif self.salary_from != 0 and self.salary_to == 0:
             return (f"ID вакансии: {self.vacancie_id}, название: {self.name}\n"
+                    f"ID работодателя {self.employer_id}\n"
                     f"Зарплата: от {self.salary_from} {self.currency}\n"
                     f"Требования: {self.requirements}\n"
                     f"Обязанности: {self.responsibility}\n"
                     f"Ссылка: {self.url}\n")
         elif self.salary_from == 0 and self.salary_to == 0:
             return (f"ID вакансии: {self.vacancie_id}, название: {self.name}\n"
+                    f"ID работодателя {self.employer_id}\n"
                     f"Зарплата: не указана\n"
                     f"Требования: {self.requirements}\n"
                     f"Обязанности: {self.responsibility}\n"
                     f"Ссылка: {self.url}\n")
         else:
             return (f"ID вакансии: {self.vacancie_id}, название: {self.name}\n"
+                    f"ID работодателя {self.employer_id}\n"
                     f"Зарплата: {self.salary_from} - {self.salary_to} {self.currency}\n"
                     f"Требования: {self.requirements}\n"
                     f"Обязанности: {self.responsibility}\n"
@@ -89,6 +95,7 @@ class Vacancy:
             # если зарплата не указана
             if i['salary'] is None:
                 cls.vacancies_list.append(Vacancy(i['id'],
+                                                  i['employer']['id'],
                                                   i['name'],
                                                   0,
                                                   0,
@@ -99,6 +106,7 @@ class Vacancy:
             # если указана только верхняя вилка
             elif i['salary']['from'] is None and i['salary']['to'] is not None:
                 cls.vacancies_list.append(Vacancy(i['id'],
+                                                  i['employer']['id'],
                                                   i['name'],
                                                   0,
                                                   i['salary']['to'],
@@ -109,6 +117,7 @@ class Vacancy:
             # если указана только нижняявилка
             elif i['salary']['from'] is not None and i['salary']['to'] is None:
                 cls.vacancies_list.append(Vacancy(i['id'],
+                                                  i['employer']['id'],
                                                   i['name'],
                                                   i['salary']['from'],
                                                   0,
@@ -119,6 +128,7 @@ class Vacancy:
             # если указано всё
             else:
                 cls.vacancies_list.append(Vacancy(i['id'],
+                                                  i['employer']['id'],
                                                   i['name'],
                                                   i['salary']['from'],
                                                   i['salary']['to'],
@@ -136,6 +146,7 @@ class Vacancy:
         принцип работы такой же, как у метода выше"""
         for i in vacancies:
             cls.favorite_vacancies_list.append(Vacancy(i['vacancie_id'],
+                                                       i['employer_id'],
                                                        i['name'],
                                                        i['salary_from'],
                                                        i['salary_to'],
