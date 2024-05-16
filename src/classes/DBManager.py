@@ -263,3 +263,60 @@ class DBManager:
                             print('--------------------------------------------------------\n')
         finally:
             conn.close()
+
+    @staticmethod
+    def get_vacancies_by_keyword(keyword):
+        """Получаем все вакансии, где зарплата выше средней"""
+        conn = psycopg2.connect(
+            host='localhost',
+            database='head_hunter',
+            user='postgres',
+            password='123'
+        )
+        try:
+            with conn:
+                with conn.cursor() as cur:
+                    cur.execute(
+                        "SELECT * FROM vacancies JOIN employers USING(employer_id)"
+                        " WHERE vacancies.name LIKE %s OR responsibility LIKE %s OR requirement LIKE %s",
+                        (keyword, keyword, keyword))
+                    result = cur.fetchall()
+                    for i in result:
+                        if i[3] == 0 and i[4] == 0:
+                            print(f"ID вакансии: {i[1]}\n"
+                                  f"Название вакаснии: {i[2]}\n"
+                                  f"Название работодателя: {i[9]}\n"
+                                  f"Зарплата не указана\n"
+                                  f"URL: {i[6]}"
+                                  f"Требования: {i[8]}"
+                                  f"Обязанности: {i[7]}")
+                            print('--------------------------------------------------------\n')
+                        elif i[3] != 0 and i[4] == 0:
+                            print(f"ID вакансии: {i[1]}\n"
+                                  f"Название вакансии: {i[2]}\n"
+                                  f"Название работодателя: {i[9]}\n"
+                                  f"Зарплата от {i[3]}\n"
+                                  f"URL: {i[6]}\n"
+                                  f"Требования: {i[8]}\n"
+                                  f"Обязанности: {i[7]}\n")
+                            print('--------------------------------------------------------\n')
+                        elif i[3] == 0 and i[4] != 0:
+                            print(f"ID вакансии: {i[1]}\n"
+                                  f"Название вакансии: {i[2]}\n"
+                                  f"Название работодателя: {i[9]}\n"
+                                  f"Зарплата до {i[4]}\n"
+                                  f"URL: {i[6]}\n"
+                                  f"Требования: {i[8]}\n"
+                                  f"Обязанности: {i[7]}\n")
+                            print('--------------------------------------------------------\n')
+                        else:
+                            print(f"ID вакансии: {i[1]}\n"
+                                  f"Название вакансии: {i[2]}\n"
+                                  f"Название работодателя: {i[9]}\n"
+                                  f"Зарплата: {i[3]} - {i[4]}\n"
+                                  f"URL: {i[6]}\n"
+                                  f"Требования: {i[8]}\n"
+                                  f"Обязанности: {i[7]}\n")
+                            print('--------------------------------------------------------\n')
+        finally:
+            conn.close()
